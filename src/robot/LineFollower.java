@@ -1,3 +1,5 @@
+package robot;
+
 import lejos.hardware.motor.Motor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.port.SensorPort;
@@ -53,24 +55,24 @@ public class LineFollower {
             {
                 // Work on these logics. they are just for illustration purposes.
                 // The turns defined below can be inverted turns. So test yourselves and rectify accordingly
-                if (sample[0] > 0.6)
+                if (sample[0] > 0.4)
                 {
                     // If it's very bright (white surface), turn left
-                    Motor.A.setSpeed(300);
+                    Motor.A.setSpeed(320);
                     Motor.B.setSpeed(150);
                 }
                 else
                 {
                     // If it's somewhat bright (near the edge of the line), turn right
                     Motor.A.setSpeed(150);
-                    Motor.B.setSpeed(300);
+                    Motor.B.setSpeed(320);
                 }
                 Motor.A.forward();
                 Motor.B.forward();
             }
 
             // Add a small delay to reduce the frequency of updates
-            Delay.msDelay(50);
+            Delay.msDelay(30);
         }
 
         // Stop the motors before exiting
