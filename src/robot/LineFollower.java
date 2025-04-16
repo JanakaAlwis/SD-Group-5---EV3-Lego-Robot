@@ -11,75 +11,61 @@ import lejos.utility.Delay;
 public class LineFollower {
 
     public static void main(String[] args) {
-        // Create and configure the color sensor
+        // Sensor setup
         EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S1);
-
-        // You can try & use other modes to see the difference & feel free to use the mode that
-        // suites your needs the best, for instance, getAmbientMode(), getRedMode(), etc
-        // Here we are setting the sensor to red mode (measures reflected red light)
-        SampleProvider light = colorSensor.getRedMode();  // Use red mode for reflected light intensity
-
-        // Create an array to hold the sensor data
+        SampleProvider light = colorSensor.getRedMode();
         float[] sample = new float[light.sampleSize()];
 
-        // Set motor speeds
-        Motor.A.setSpeed(300);
-        Motor.B.setSpeed(300);
+        // PID Constants (Tune these values for best performance)
+        float Kp = 500f;  // Proportional
+        float Ki = 0f;    // Integral (can start with 0)
+        float Kd = 1000f; // Derivative
 
-        // Start motors moving forward
-        Motor.A.forward();
-        Motor.B.forward();
+        // PID variables
+        float error, lastError = 0;
+        float integral = 0, derivative;
+        float baseSpeed = 200; // base motor speed
+        float target = 0.2f;   // target light value (edge between black and white)
 
-        // Continuously follow the line until a button is pressed
+        // Main loop
         while (!Button.ESCAPE.isDown()) {
-            // Get the current red light intensity reading from the sensor
-            light.fetchSample(sample, 0);  // 0 is the index where data will be stored
-            
-            // for debugging purposes, better to display light intensity on LCD
+            light.fetchSample(sample, 0);
+            float value = sample[0];
+
+            // Calculate PID terms
+            error = target - value;
+            integral += error;
+            derivative = error - lastError;
+            float turn = Kp * error + Ki * integral + Kd * derivative;
+
+            // Calculate motor speeds
+            float leftSpeed = baseSpeed + turn;
+            float rightSpeed = baseSpeed - turn;
+
+            // Clamp speeds to valid range (0–900 for EV3)
+            leftSpeed = Math.max(0, Math.min(900, leftSpeed));
+            rightSpeed = Math.max(0, Math.min(900, rightSpeed));
+
+            // Set motor speeds
+            Motor.A.setSpeed((int) leftSpeed);
+            Motor.B.setSpeed((int) rightSpeed);
+            Motor.A.forward();
+            Motor.B.forward();
+
+            // Debug output
             LCD.clear();
-            LCD.drawString("Red Light Intensity: " + (int)(sample[0] * 100) + "%", 0, 0);
-            
-            // Threshold for detecting the black line
-            // NOTE: You'll most probably have to fine tune the threshold value
-            float threshold = 0.2f;  // Adjusted threshold value for the black line detection
+            LCD.drawString("Light: " + (int)(value * 100) + "%", 0, 0);
+            LCD.drawString("Turn: " + (int)turn, 0, 1);
 
-            // If the light intensity is low (black line), the robot is on the line
-            if (sample[0] < threshold)
-            { 
-                Motor.A.setSpeed(300);
-                Motor.B.setSpeed(300);
-                Motor.A.forward();
-                Motor.B.forward();
-            }
-            else                        // Off the black line, adjust to turn towards the line
-            {
-                // Work on these logics. they are just for illustration purposes.
-                // The turns defined below can be inverted turns. So test yourselves and rectify accordingly
-                if (sample[0] > 0.4)
-                {
-                    // If it's very bright (white surface), turn left
-                    Motor.A.setSpeed(320);
-                    Motor.B.setSpeed(150);
-                }
-                else
-                {
-                    // If it's somewhat bright (near the edge of the line), turn right
-                    Motor.A.setSpeed(150);
-                    Motor.B.setSpeed(320);
-                }
-                Motor.A.forward();
-                Motor.B.forward();
-            }
+            // Prepare for next loop
+            lastError = error;
 
-            // Add a small delay to reduce the frequency of updates
-            Delay.msDelay(30);
+            Delay.msDelay(30);  // PID loop delay
         }
 
-        // Stop the motors before exiting
+        // Stop motors and cleanup
         Motor.A.stop();
         Motor.B.stop();
-        
-        // Remember to close the sensor before exiting
         colorSensor.close();
     }
 }
