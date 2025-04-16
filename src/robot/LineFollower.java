@@ -11,20 +11,20 @@ import lejos.utility.Delay;
 public class LineFollower {
 
     public static void main(String[] args) {
-        // Sensor setup updated
+        // Sensor setup
         EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S1);
         SampleProvider light = colorSensor.getRedMode();
         float[] sample = new float[light.sampleSize()];
 
         // PID Constants (Tune these values for best performance)
-        float Kp = 500f;  // Proportional
-        float Ki = 0f;    // Integral (can start with 0)
-        float Kd = 1000f; // Derivative
+        float Kp = 250f;  // Proportional
+        float Ki = 5f;    // Integral (can start with 0)
+        float Kd = 800f; // Derivative
 
         // PID variables
         float error, lastError = 0;
         float integral = 0, derivative;
-        float baseSpeed = 200; // base motor speed
+        float baseSpeed = 150; // base motor speed
         float target = 0.2f;   // target light value (edge between black and white)
 
         // Main loop
@@ -42,9 +42,9 @@ public class LineFollower {
             float leftSpeed = baseSpeed + turn;
             float rightSpeed = baseSpeed - turn;
 
-            // Clamp speeds to valid range (0–900 for EV3)
-            leftSpeed = Math.max(0, Math.min(900, leftSpeed));
-            rightSpeed = Math.max(0, Math.min(900, rightSpeed));
+            // Clamp speeds to valid range (0-400 for EV3)
+            leftSpeed = Math.max(0, Math.min(450, leftSpeed));
+            rightSpeed = Math.max(0, Math.min(450, rightSpeed));
 
             // Set motor speeds
             Motor.A.setSpeed((int) leftSpeed);
@@ -60,7 +60,7 @@ public class LineFollower {
             // Prepare for next loop
             lastError = error;
 
-            Delay.msDelay(30);  // PID loop delay
+            Delay.msDelay(20);  // PID loop delay
         }
 
         // Stop motors and cleanup
