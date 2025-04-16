@@ -11,7 +11,7 @@ import lejos.utility.Delay;
 public class LineFollower {
 
     public static void main(String[] args) {
-        // Sensor setup
+        // Sensor setup updated
         EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S1);
         SampleProvider light = colorSensor.getRedMode();
         float[] sample = new float[light.sampleSize()];
