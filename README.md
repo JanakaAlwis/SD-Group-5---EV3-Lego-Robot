@@ -119,7 +119,7 @@ These parameters can be adjusted in the Constants.java file to optimize performa
 
 ## Terminating the Program
 
-Press the ESCAPE button on the EV3 brick to stop the program safely.
+Press the ESCAPE button on the EV3 brick to stop the program safely
 
 ## Customization
 
