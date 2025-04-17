@@ -2,7 +2,7 @@
 * @JanakaAlwis
 
 # Vindya owns frontend code
-/src/frontend/ @VindyaNuku
+/src/frontend/ @VindyNuku
 
 # AMK owns documentation
 /docs/ @amk1001928
@@ -11,4 +11,4 @@
 README.md @JanakaAlwis @amk1001928
 
 # Tests owned by Janaka and Vindya
-/tests/ @JanakaAlwis @VindyaNuku
+/tests/ @JanakaAlwis @VindyNuku
