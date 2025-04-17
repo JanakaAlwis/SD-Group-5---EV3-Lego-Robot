@@ -1,0 +1,14 @@
+# Janaka owns everything by default
+* @JanakaAlwis
+
+# Vindya owns frontend code
+/src/frontend/ @VindyaNuku
+
+# AMK owns documentation
+/docs/ @amk1001928
+
+# README.md reviewed by both Janaka and AMK
+README.md @JanakaAlwis @amk1001928
+
+# Tests owned by Janaka and Vindya
+/tests/ @JanakaAlwis @VindyaNuku
