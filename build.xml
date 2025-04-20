@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="TestMotors3" default="run">
+<project name="LineFollower" default="run">
     <property file="build.properties"/>
 
     <target name="run">
@@ -9,7 +9,7 @@
             <arg value="&quot;${ev3.control}&quot;"/>
             <arg value="run"/>
             <arg value="-jar"/>
-            <arg value="motorsspin3.jar"/>  <!-- Ensure the JAR is in the project root -->
+            <arg value="linefollower1.jar"/>  <!-- Ensure the JAR is in the project root -->
         </exec>
     </target>
 </project>
