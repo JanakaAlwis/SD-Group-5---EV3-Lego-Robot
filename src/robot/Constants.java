@@ -16,7 +16,7 @@ public class Constants {
     
     // Control delays:
     public static final int controlLoopDelay = 10; // It controls the normal "heartbeat" of the robot's brain.
-    public static final int recoveryDelay = 100;   // Gives the robot time to finish its movement
+    public static final int recoveryDelay = 100; // Gives the robot time to finish its movement
     public static final int COLOR_SAMPLE_INTERVAL = 15;  // ms delay for checking color sensor
 
     // Ultrasonic sensor ranges:

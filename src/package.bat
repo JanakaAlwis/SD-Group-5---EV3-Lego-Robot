@@ -1,1 +1,1 @@
-"C:\Program Files\Java\jdk1.7.0_80\bin\jar" -cfe ../linefollower1.jar robot.LineFollower -C ../bin .
+"C:\Program Files\Java\jdk1.7.0_80\bin\jar" -cfe ../EV3linefollower.jar robot.LineFollower -C ../bin .
